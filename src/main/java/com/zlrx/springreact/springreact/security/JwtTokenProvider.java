@@ -2,8 +2,14 @@ package com.zlrx.springreact.springreact.security;
 
 
 import com.zlrx.springreact.springreact.domain.User;
+import com.zlrx.springreact.springreact.exception.BusinessException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +40,28 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
                 .compact();
 
+    }
+
+    public void validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token);
+        } catch (SignatureException ex) {
+            throw new BusinessException("Invalid token signature");
+        } catch (MalformedJwtException ex) {
+            throw new BusinessException("Invalid token");
+        } catch (ExpiredJwtException ex) {
+            throw new BusinessException("Token expired");
+        } catch (UnsupportedJwtException ex) {
+            throw new BusinessException("Unsupported token");
+        } catch (IllegalArgumentException ex) {
+            throw new BusinessException("JWT claims is empty");
+        }
+    }
+
+    public Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
+        Long id = Long.parseLong(claims.get("id", String.class));
+        return id;
     }
 
 
