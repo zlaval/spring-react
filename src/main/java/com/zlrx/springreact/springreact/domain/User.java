@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
@@ -34,10 +33,6 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Password field is requiered")
     private String password;
-
-    @Transient
-    @JsonIgnore
-    private String confirmPassword;
 
     @Override
     @JsonIgnore

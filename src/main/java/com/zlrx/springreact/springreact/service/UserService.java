@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
 
     public User saveUser(User user) {
         UserDetails existingUser = loadUserByUsername(user.getUsername());
-        if (Objects.isNull(existingUser)) {
+        if (Objects.nonNull(existingUser)) {
             throw new BusinessException("User already exists");
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
