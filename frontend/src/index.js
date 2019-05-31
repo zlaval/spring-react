@@ -10,6 +10,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
 import App from "./App";
 import Home from "./component/Home";
 import Register from "./component/Register";
+import Login from "./component/Login";
 
 
 const store = createStore(
@@ -22,15 +23,11 @@ ReactDOM.render(
         <BrowserRouter>
             <App>
                 <Route path="/register" component={Register}/>
+                <Route path="/login" component={Login}/>
                 <Route path="/" exact={true} component={Home}/>
             </App>
-
         </BrowserRouter>
-
     </Provider>
-
-
     , document.getElementById('root'));
-
 
 serviceWorker.unregister();

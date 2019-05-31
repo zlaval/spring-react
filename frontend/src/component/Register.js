@@ -10,7 +10,7 @@ class Register extends React.Component {
     onSubmit = (form) => {
         console.log(form)
         this.props.signup(form, () => {
-            this.props.history.push("/")
+            this.props.history.push("/login")
         })
     }
 
@@ -48,7 +48,7 @@ class Register extends React.Component {
                             autoComplete="none"
                         />
                     </fieldset>
-                    <button>Signup</button>
+                    <button>Register</button>
 
                 </form>
 
