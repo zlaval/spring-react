@@ -9,7 +9,7 @@ import {Provider} from "react-redux";
 import {BrowserRouter, Route} from 'react-router-dom'
 import App from "./App";
 import Home from "./component/Home";
-import Page from "./component/Page";
+import Register from "./component/Register";
 
 
 const store = createStore(
@@ -21,7 +21,7 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <App>
-                <Route path="/page" component={Page}/>
+                <Route path="/register" component={Register}/>
                 <Route path="/" exact={true} component={Home}/>
             </App>
 

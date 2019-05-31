@@ -8,7 +8,7 @@ export default class Header extends React.Component {
         return (
             <div>
                 <Link to="/">Home</Link>
-                <Link to="/page">Page</Link>
+                <Link to="/register">Register</Link>
             </div>
         )
     }
