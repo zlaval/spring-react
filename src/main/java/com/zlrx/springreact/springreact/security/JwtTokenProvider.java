@@ -2,7 +2,6 @@ package com.zlrx.springreact.springreact.security;
 
 
 import com.zlrx.springreact.springreact.domain.User;
-import com.zlrx.springreact.springreact.exception.BusinessException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -42,20 +41,22 @@ public class JwtTokenProvider {
 
     }
 
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token);
+            return true;
         } catch (SignatureException ex) {
-            throw new BusinessException("Invalid token signature");
+            // throw new BusinessException("Invalid token signature");
         } catch (MalformedJwtException ex) {
-            throw new BusinessException("Invalid token");
+            //  throw new BusinessException("Invalid token");
         } catch (ExpiredJwtException ex) {
-            throw new BusinessException("Token expired");
+            //  throw new BusinessException("Token expired");
         } catch (UnsupportedJwtException ex) {
-            throw new BusinessException("Unsupported token");
+            // throw new BusinessException("Unsupported token");
         } catch (IllegalArgumentException ex) {
-            throw new BusinessException("JWT claims is empty");
+            // throw new BusinessException("JWT claims is empty");
         }
+        return false;
     }
 
     public Long getUserIdFromToken(String token) {
