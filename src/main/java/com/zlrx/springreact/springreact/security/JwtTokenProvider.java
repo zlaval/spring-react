@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +34,8 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(userId)
                 .setClaims(claims)
-                .setIssuedAt(Date.from(now.toInstant(ZoneOffset.UTC)))
-                .setExpiration(Date.from(expiryDate.toInstant(ZoneOffset.UTC)))
+                .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
+                .setExpiration(Date.from(expiryDate.atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
                 .compact();
 

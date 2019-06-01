@@ -6,10 +6,14 @@ import {signin} from "../action";
 
 class Login extends React.Component {
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth.authenticated) {
+            this.props.history.push("/")
+        }
+    }
+
     onSubmit = (form) => {
-        this.props.signin(form, () => {
-            this.props.history.push('/');
-        });
+        this.props.signin(form);
     };
 
     render() {
@@ -41,7 +45,11 @@ class Login extends React.Component {
     }
 }
 
+function mapStateToProp({auth}) {
+    return {auth}
+}
+
 export default compose(
-    connect(null, {signin}),
+    connect(mapStateToProp, {signin}),
     reduxForm({form: 'signin'})
 )(Login)
