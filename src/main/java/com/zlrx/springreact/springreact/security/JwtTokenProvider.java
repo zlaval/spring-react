@@ -9,6 +9,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
@@ -38,7 +42,6 @@ public class JwtTokenProvider {
                 .setExpiration(Date.from(expiryDate.atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
                 .compact();
-
     }
 
     public boolean validateToken(String token) {
@@ -46,15 +49,15 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token);
             return true;
         } catch (SignatureException ex) {
-            // throw new BusinessException("Invalid token signature");
+            logger.debug("Invalid token signature {}", token);
         } catch (MalformedJwtException ex) {
-            //  throw new BusinessException("Invalid token");
+            logger.debug("Invalid token {}", token);
         } catch (ExpiredJwtException ex) {
-            //  throw new BusinessException("Token expired");
+            logger.debug("Token expired {}", token);
         } catch (UnsupportedJwtException ex) {
-            // throw new BusinessException("Unsupported token");
+            logger.debug("Unsupported token {}", token);
         } catch (IllegalArgumentException ex) {
-            // throw new BusinessException("JWT claims is empty");
+            logger.debug("JWT claims is empty {}", token);
         }
         return false;
     }

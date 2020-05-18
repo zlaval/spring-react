@@ -17,7 +17,7 @@ public class JwtAuthenticationEntrypoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        InvalidLoginResponse invalidLoginResponse = new InvalidLoginResponse();
+        InvalidLoginResponse invalidLoginResponse = new InvalidLoginResponse(authException.getMessage());
         String jsonLoginResponse = new Gson().toJson(invalidLoginResponse);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

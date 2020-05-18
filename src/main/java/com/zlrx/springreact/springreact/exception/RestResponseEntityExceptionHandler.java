@@ -4,6 +4,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = BusinessException.class)
     protected ResponseEntity<Object> handleBusinessException(RuntimeException exception, WebRequest request) {
         return handleExceptionInternal(exception, exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException exception, WebRequest request) {
+        return new ResponseEntity<>("Invalid credentials", null, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = Exception.class)
